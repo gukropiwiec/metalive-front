@@ -1,7 +1,13 @@
 .fundo{
     background-color: rgba(245, 245, 245, 1);
-    //height: 700px;
     height: auto;
+}
+body{
+    overflow-x: hidden;
+}
+#bannerPrincipal{
+    margin: 0;
+    padding-top: 75px; 
 }
 #txt1{
     font-family: Poppins;
@@ -38,14 +44,16 @@
     font-family: Poppins;
     font-size: 20px;
     font-weight: 500;
-    line-height: 57.6px;
+    line-height: 50px;
     letter-spacing: -0.8999999165534973px;
     text-align: center;
     color: rgba(255, 255, 255, 1);
+    //align-items: center;
 }
 #imgInicio{
     //width: 908px;
     height: 766px;
+    overflow-x: hidden;
     margin-top: -40px;
     margin-left: -190px;
 }
@@ -143,7 +151,7 @@
 }
 @media (max-width: 578px){
     #txt1{
-        margin-top: 15px;
+        margin-top: 14px;
         font-size: 25px;
         margin-left: 10px;
         line-height: 30px;
@@ -163,7 +171,7 @@
     .txtBotao{
         margin-top: 17px;
         font-size: 16px;
-        line-height: 20px;
+        //line-height: 20px;
     }
     #imgInicio{
         height: 0px;

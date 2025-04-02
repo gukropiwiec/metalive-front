@@ -1,99 +1,107 @@
-import { Component, inject } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { ToastComponent } from '../toast/toast.component';
-import { AppToastService } from '../../services/toast.service';
-import { doc, Firestore, updateDoc } from '@angular/fire/firestore';
+import { Component, OnInit, Input } from "@angular/core";
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms'; // Importando ReactiveFormsModule
+import { CommonModule } from '@angular/common'; // Importando CommonModule para suporte a tags padrão
+import { FormService } from '../../services/form.service';
 
 @Component({
-  selector: 'app-form',
+  selector: "app-form",
   standalone: true,
-  imports: [FormsModule, ToastComponent],
-  templateUrl: './form.component.html',
-  styleUrl: './form.component.scss'
+  imports: [ReactiveFormsModule, CommonModule], // Adicionando ReactiveFormsModule e CommonModule aos imports
+  templateUrl: "./form.component.html",
+  styleUrls: ["./form.component.scss"]
 })
-export class FormComponent {
-  private firestore: Firestore = inject(Firestore);
-  toastService = inject(AppToastService);
+export class FormComponent implements OnInit {
+  @Input() clienteId!: string; // Recebendo o clienteId como entrada
+  form!: FormGroup;
 
-  formData = {
-    nome: '',
-    documentoIdentidade: '',
-    orgaoEmissor: '',
-    cpf: '',
-    cep: '',
-    rua: '',
-    numero: '',
-    complemento: '',
-    dataNascimento: '',
-    sexoFeminino: false,
-    sexoMasculino: false,
-    restricaoExercicio: false,
-    semRestricaoExercicio: false,
-    pressaoBaixa: false,
-    pressaoMedia: false,
-    pressaoAlta: false,
-    hipertensao: false,
-    cardiopatia: false,
-    diabetes: false,
-    explicacao: '',
-    tratamentoSim: false,
-    tratamentoNao: false,
-    medicamentoSim: false,
-    medicamentoNao: false,
-    quaisMedicamentos: '',
-    cirurgiaSim: false,
-    cirurgiaNao: false,
-    dorSim: false,
-    dorNao: false,
-    atividadeFisica: false,
-    semAtividadeFisica: false,
-    qualAtividade: '',
-    diasHorarios: '',
-    bebidasSim: false,
-    bebidasNao: false,
-    frequenciaBebidas: '',
-    cigarroSim: false,
-    cigarroNao: false,
-    aguaZero: false,
-    agua1L: false,
-    agua1a2L: false,
-    agua2a3L: false,
-    aguaMais3L: false,
-    alimentoNaoGosta: '',
-    alimentoGosta: '',
-    horarioApetite: '',
-    refeicoesNoDia: '',
-    alergiaSim: false,
-    alergiaNao: false,
-  };
+  constructor(private fb: FormBuilder, private formService: FormService) {}
 
-  showSuccess(title: string, message: string) {
-		this.toastService.show(title, message, 'bg-success text-light');
-	}
-
-	showDanger(title: string, message: string) {
-		this.toastService.show(title, message, 'bg-danger text-light');
-	}
-
+  ngOnInit(): void {
+    this.form = this.fb.group({
+      uid: [this.clienteId],
+      nome: ['', Validators.required],
+      email: ['', Validators.required],
+      dataNascimento: ['', Validators.required],
+      genero: ['', Validators.required],
+      altura: ['', Validators.required],
+      peso: ['', Validators.required],
+      objetivo: ['', Validators.required],
+      consultaDiaEHora: ['', Validators.required],
+      restricaoExerciciosSim: [''],
+      restricaoExerciciosNao: [''],
+      pressaoArterialBaixa: [''],
+      pressaoArterialMedia: [''],
+      pressaoArterialAlta: [''],
+      historicoDoencasHipertensao: [''],
+      historicoDoencasCardiopatia: [''],
+      historicoDoencasDiabetes: [''],
+      expliqueHistoricoDoencas: [''],
+      tratamentoDiaADiaSim: [''],
+      tratamentoDiaADiaNao: [''],
+      medicamentoRegularSim: [''],
+      medicamentoRegularNao: [''],
+      qualMedicamentoRegular: [''],
+      cirurgiaRecenteSim: [''],
+      cirurgiaRecenteNao: [''],
+      dorDiaADiaSim: [''],
+      dorDiaADiaNao: [''],
+      localDorDiaADia: [""],
+      atividadeFisicaSim: ['',],
+      atividadeFisicaNao: ['',],
+      qualAtividadeFisica: [''],
+      atividadeFisicaDiasHorarios: ['', Validators.required],
+      consomeBebidasAlcoolicasSim: [''],
+      consomeBebidasAlcoolicasNao: [''],
+      frequenciaBebidasAlcoolicas: [''],
+      tabagistaSim: [''],
+      tabagistaNao: [''],
+      consumoAguaZero: [''],
+      consumoAguaAte1l: [''],
+      consumoAguaEntre1le2l: [''],
+      consumoAguaEntre2le3l: [''],
+      consumoAguaMais3l: [''],
+      alimentosNaoGosta: ['', Validators.required],
+      alimentosIndispensaveis: ['', Validators.required],
+      horarioMaiorApetite: ['', Validators.required],
+      refeicoesDia: ['', Validators.required],
+      alergiaIntoleranciaSim: [''],
+      alergiaIntoleranciaNao: [''],
+      qualAlergiaIntolerancia: ['']
+    });
+  }
   onSubmit() {
-    console.log('Dados do Formulário:', this.formData);
+    if (this.form.valid) {
+        // Combine os dados do formulário com o clienteId
+        const formData = { ...this.form.value, clienteId: this.clienteId };
 
-    const userStorage = localStorage.getItem('user')
-    if (!userStorage) {
-      this.showDanger('Erro', 'Usuário não encontrado na sessão. Favor fazer o login novamente.');
+        // Verifique se clienteId está definido
+        console.log('clienteId:', this.clienteId); // Adicione esta linha para depuração
+
+        this.formService.salvarFormulario(formData).then(() => {
+            console.log('Formulário salvo com sucesso!');
+            alert('Formulário enviado com sucesso!');
+        }).catch(error => {
+            console.error('Erro ao salvar o formulário: ', error);
+        });
+    } else {
+        console.log('Formulário inválido');
+        alert('Preencha os campos obrigatórios');
+    }
+}
+
+
+  onlyOne(eventTarget: EventTarget | null, groupName: string): void {
+    const checkbox = eventTarget as HTMLInputElement;
+    if (!checkbox) {
+      console.error("Checkbox não foi encontrado.");
       return;
     }
-    const uid = JSON.parse(userStorage).uid;
-    
-    const userDocRef = doc(this.firestore, `users/${uid}`);
-
-    updateDoc(userDocRef, this.formData)
-    .then(() => {
-      this.showSuccess('Sucesso!', 'Dados salvos com sucesso.');
-    })
-    .catch((error) => {
-      this.showDanger('Erro.', `Erro ao salvar dados: ${error}`);
-      console.log(error);
-    })
+    const checkboxes = document.getElementsByName(groupName) as NodeListOf<HTMLInputElement>;
+    checkboxes.forEach((item) => {
+      if (item !== checkbox) {
+        item.checked = false;
+      }
+    });
   }
 }

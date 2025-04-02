@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
-#apresentacao{
+#meuDestino{
     width: 100%;
     background-color: #F7F8FA 80%;
 }
@@ -23,6 +23,17 @@
     line-height: 58px;
     text-align: center;
     color: #303A6D;
+}
+#texto1-metalive{
+    font-family: Poppins;
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 58px;
+    text-align: center;
+    color: #303A6D;
+}
+#texto1-metalive:hover{
+    color:#1472B0;
 }
 #bloco2{
     background-color: #F7F8FA 80%;
