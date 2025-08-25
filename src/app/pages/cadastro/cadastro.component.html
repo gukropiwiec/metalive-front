@@ -13,53 +13,63 @@
               <div class="row">
                 <div class="col-xl-10 col-lg-10 col-md-10 col-sm-9 col-8">
                   <p class="tituloTextoDados">Plano <u>Metalive</u></p>
-                  <a (click)="rolarParaDestino($event, 'destinoDetalhePagamento')" class="linkDetalhesPagamento" href="/">Detalhes de pagamento ></a>
+                  <a (click)="rolarParaDestino($event, 'destinoDetalhePagamento')" class="linkDetalhesPagamento"
+                    href="/">Detalhes de pagamento ></a>
                 </div>
                 <div class="col-xl-2 col-lg-2 col-md-2 col-sm-3 col-4">
                   <p class="textoDados">Total:</p>
-                  <p class="textoDadosValor2">R$ 159,90</p>
+                  <p class="textoDadosValor2">R$ 159,90 - (R$ 1,00 p/ teste)</p>
                 </div>
               </div>
             </div>
-            <form (ngSubmit)="onSubmit()">
+            <form id="form-checkout">
               <div class="row">
                 <div class="col-xl-6 col-lg-6 col-md-6 col-sm-11 col-11 mx-auto">
                   <!-- Formulário Único -->
                   <p class="textoInput">Nome completo:</p>
-                  <input class="inputLogin" type="text" placeholder="" [(ngModel)]="nome" name="nome" required>
+                  <input class="inputLogin" type="text" placeholder="" [(ngModel)]="nome" name="nome">
                   <p class="textoInput">E-mail:</p>
-                  <input class="inputLogin" type="email" placeholder="" [(ngModel)]="email" name="email" required>
+                  <input class="inputLogin" type="email" placeholder="email@email.com" [(ngModel)]="cardholderEmail"
+                    name="cardholderEmail" id="cardholderEmail">
                   <p class="textoInput">Senha:</p>
-                  <input class="inputLogin" type="password" placeholder="Senha" [(ngModel)]="password" name="password" required>
-                  <p class="textoInput">Confirme a senha:</p>
-                  <input class="inputLogin" type="password" placeholder="Repita a senha" [(ngModel)]="repeatPassword" name="repeatPassword"
-                    required>
-                    <p class="textoInput">Número de celular:</p>
-                  <input class="inputLogin" type="text" placeholder="00 000000000" [(ngModel)]="numeroTelefone" name="numeroTelefone" required>
+                  <input class="inputLogin" type="password" placeholder="Senha" [(ngModel)]="password" name="password">
+                  <p class="textoInput">Confirmar Senha:</p>
+                  <input class="inputLogin" type="password" placeholder="Repita a senha" [(ngModel)]="repeatPassword"
+                    name="repeatPassword">
+                  <p class="textoInput">Número de celular:</p>
+                  <input class="inputLogin" type="text" placeholder="00 00000-0000" [(ngModel)]="numeroTelefone"
+                    name="numeroTelefone">
+                  <p class="textoInput">Endereço:</p>
+                  <input class="inputLogin" type="text" id="billingAddress" name="billingAddress"
+                    placeholder="Rua, número, cidade" [(ngModel)]="billingAddress" required>
                 </div>
                 <div class="col-xl-6 col-lg-6 col-md-6 col-sm-11 col-11 mx-auto">
                   <!-- Campos de pagamento -->
-                  
-                  <p class="textoInput">Nome do cartao:</p>
-                  <input class="inputLogin" type="text" placeholder="" [(ngModel)]="paymentData.card.name" name="name"
-                    required>
-                    <p class="textoInput">Número do cartão:</p>
-                  <input class="inputLogin" type="text" placeholder="" [(ngModel)]="paymentData.card.card_number"
-                    name="card_number" required>
-                    <p class="textoInput">Data de Expiração:</p>
-                  <input class="inputLogin" type="text" placeholder="MM/AA" [(ngModel)]="paymentData.card.card_expiration_date"
-                    name="card_expiration_date" required>
-                    <p class="textoInput">Data de expedição:</p>
-                  <input class="inputLogin" type="text" placeholder="123" [(ngModel)]="paymentData.card.card_cvv" name="card_cvv" required>
-                  <p class="textoInput">Endereço:</p>
-                  <input class="inputLogin" type="text" id="billingAddress" name="billingAddress" placeholder="Rua, número, cidade"
-                    [(ngModel)]="paymentData.card.billingAddress" required>
+                  <p class="textoInput">Nome no cartão:</p>
+                  <input class="inputLogin" type="text" placeholder="Nome no cartão" [(ngModel)]="cardholderName"
+                    name="cardholderName" id="cardholderName">
+                  <p class="textoInput">Número do cartão:</p>
+                  <input class="inputLogin" type="text" placeholder="" [(ngModel)]="cardNumber" name="cardNumber"
+                    id="cardNumber">
+                  <p class="textoInput">Data de Expiração:</p>
+                  <input class="inputLogin" type="text" placeholder="MM/AA" [(ngModel)]="expirationDate"
+                    name="expirationDate" id="expirationDate">
+                  <p class="textoInput">CVV:</p>
+                  <input class="inputLogin" type="text" placeholder="CVV" [(ngModel)]="securityCode" name="securityCode"
+                    id="securityCode">
+                  <p class="textoInput">Banco Emissor:</p>
+                  <select id="issuer" class="inputLogin"></select>
+                  <p class="textoInput">Parcelas:</p>
+                  <select id="installments" class="inputLogin"></select>
                 </div>
               </div>
               <div id="posicaoTermos">
-                <input id="inputTermos" type="checkbox"> <p id="textoTermos">Eu aceito os <a id="linkTermos" target="_blank" rel="noopener noreferrer" href="../../../assets/Termo_de_Uso_e_Politica_de_Privacidade__METALIVE_Cliente_1729101885102222.pdf">termos de uso e politica de privacidade</a>.</p>
+                <input id="inputTermos" [(ngModel)]="aceito" name="aceito" type="checkbox">
+                <p id="textoTermos">Eu aceito os <a id="linkTermos" target="_blank" rel="noopener noreferrer"
+                    href="../../../assets/Termo_de_Uso_e_Politica_de_Privacidade__METALIVE_Cliente_1729101885102222.pdf">termos
+                    de uso e politica de privacidade</a>.</p>
               </div>
-              <button class="cadastro-btn mx-auto" type="submit">COMEÇAR</button>
+              <button class="cadastro-btn mx-auto" type="button" id="form-checkout__submit" (click)="validarFormulario()">COMEÇAR</button>
             </form>
             <!--
             <p class="col-12 mx-auto texto3">Continue com as redes sociais.</p>
@@ -72,28 +82,28 @@
                 alt=""></a>
             <div class="col-4 mx-auto"></div>
           </div>-->
+          </div>
+          <!-- <button (click)="onLogout()">Logout</button>tirar-->
+          <!--<img class="col-xl-8 col-lg-8 col-md-8 d-none d-md-block" id="logoGrande" src="../../../assets/paginas/login/logo1.png" alt="">-->
         </div>
-       <!-- <button (click)="onLogout()">Logout</button>tirar-->
-        <!--<img class="col-xl-8 col-lg-8 col-md-8 d-none d-md-block" id="logoGrande" src="../../../assets/paginas/login/logo1.png" alt="">-->
       </div>
+      <div #destinoDetalhePagamento id="destinoDetalhePagamento" class="col-12 detalhesPagamento">
+        <P class="tituloDetalhesPagamento">Plano <u>METALIVE</u>- Básico</P>
+        <p class="textoDados">Custo de serviços:</p>
+        <p class="textoDadosValor">R$ 125,00</p>
+        <div class="linha"></div>
+        <p class="textoDados">Custo de operação:</p>
+        <p class="textoDadosValor">R$ 34,90</p>
+        <div class="linha"></div>
+        <p class="textoDados">Taxa de adesão:</p>
+        <p class="textoDadosValor">R$ 00,00</p>
+        <div class="linha"></div>
+        <p class="textoDados">Total:</p>
+        <p class="textoDadosValor">R$ 159,90</p>
+      </div>
+      <p style="margin-top: 5px;" class="texto3 mx-auto">É um colaborador? Faça seu cadastro <a
+          href="/cadastroColaborador">aqui</a>. É cliente? faça o login <a href="/login">aqui</a>.</p>
     </div>
-    <div #destinoDetalhePagamento id="destinoDetalhePagamento" class="col-12 detalhesPagamento">
-      <P class="tituloDetalhesPagamento">Plano <u>METALIVE</u>- Básico</P>
-      <p class="textoDados">Custo de serviços:</p>
-      <p class="textoDadosValor">R$ 125,00</p>
-      <div class="linha"></div>
-      <p class="textoDados">Custo de operação:</p>
-      <p class="textoDadosValor">R$ 34,90</p>
-      <div class="linha"></div>
-      <p class="textoDados">Taxa de adesão:</p>
-      <p class="textoDadosValor">R$ 00,00</p>
-      <div class="linha"></div>
-      <p class="textoDados">Total:</p>
-      <p class="textoDadosValor">R$ 159,90</p>
-    </div>
-    <p style="margin-top: 5px;" class="texto3 mx-auto">É um colaborador? Faça seu cadastro <a
-      href="/cadastroColaborador">aqui</a>. É cliente? faça o login <a href="/login">aqui</a>.</p>
   </div>
-</div>
 </div>
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src-elem 'self' https://www.gstatic.com;">
